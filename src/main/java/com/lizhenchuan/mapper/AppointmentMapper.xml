@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lizhenchuan.mapper.AppointmentMapper">
+    <resultMap id="BaseResultMap" type="com.lizhenchuan.bean.Appointment">
+        <id column="oid" property="oid" jdbcType="BIGINT"/>
+        <result column="rid" property="rid" jdbcType="BIGINT"/>
+        <result column="bid" property="bid" jdbcType="BIGINT"/>
+        <result column="appointmentTIme" property="appointmenttime"
+                jdbcType="DATE"/>
+        <result column="appointmentState" property="appointmentstate"
+                jdbcType="INTEGER"/>
+    </resultMap>
+    <!--  private Long oid;  rid; bid; appointmenttime; appointmentstate;-->
+    <insert id="saveAppointment" parameterType="Appointment">
+        CALL appointmentSaveappointment(
+            #{oid}, #{rid}, #{bid}, #{appointmenttime}, #{appointmentstate}
+        )
+    </insert>
+    <!--public void updateAppointmentState(ong oid,Integer appointmentState); //修改预约状态-->
+    <update id="updateAppointmentState">
+        call appointmentUpdateappointmentState(
+                #{oid},#{appointmentState}
+        )
+    </update>
+    <!--public List<Appointment> selectAppointment(long rid); //查询用户预约记录-->
+    <select id="selectAppointment" parameterType="Long"
+            resultType="Appointment">
+        select * from appointment
+        <where>
+            rid = #{rid}
+        </where>
+    </select>
+    <!--public Date selectAppointmentTIme(long oid); //查询预约订单的预约时间-->
+    <select id="selectAppointmentTIme" parameterType="Long" resultType="Date">
+        select appointmentTIme from appointment
+        <where>
+            oid = #{oid}
+        </where>
+    </select>
+</mapper>

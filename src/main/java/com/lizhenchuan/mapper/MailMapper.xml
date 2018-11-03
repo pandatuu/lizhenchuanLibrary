@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lizhenchuan.mapper.MailMapper">
+    <resultMap id="BaseResultMap" type="com.lizhenchuan.bean.Mail">
+        <id column="mid" property="mid" jdbcType="BIGINT"/>
+        <result column="rid" property="rid" jdbcType="BIGINT"/>
+        <result column="bid" property="bid" jdbcType="BIGINT"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="wNumber" property="wnumber" jdbcType="INTEGER"/>
+    </resultMap>
+    <resultMap id="integer" type="java.lang.Integer">
+    </resultMap>
+    <!--public void saveMail(Mail mail); //添加邮寄记录-->
+    <insert id="saveMail" parameterType="Mail">
+        insert into mail (mid, rid, bid, address, phone, wnumber)
+        value (#{mid}, #{rid}, #{bid}, #{address}, #{phone}, #{wnumber});
+    </insert>
+    <!--public void updateAddress(@Param("mid")Long mid,@Param("address")String address); //修改订单联系地址-->
+    <update id="updateAddress" >
+        update mail set address = #{address}
+        <where>
+            mid = #{mid}
+        </where>
+    </update>
+    <!--public void updatePhone(@Param("mid")Long mid,@Param("phone")String phone); //修改订单电话-->
+    <update id="updatePhone">
+        update mail set phone = #{phone}
+        <where>
+            mid = #{mid}
+        </where>
+    </update>
+    <!--public List<Mail> selectMail(Long rid); //查询用户邮寄记录-->
+    <select id="selectMail" parameterType="Long" resultType="Mail">
+        select * from mail
+        <where>
+            rid = #{rid}
+        </where>
+    </select>
+    <!--public List<Long> selectMid(Long rid); //查询用户邮寄记录ID-->
+    <select id="selectMid" parameterType="Long" resultType="Long">
+        select mid from mail
+        <where>
+            rid = #{rid}
+        </where>
+    </select>
+</mapper>

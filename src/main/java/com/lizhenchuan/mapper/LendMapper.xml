@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lizhenchuan.mapper.LendMapper" >
+  <resultMap id="BaseResultMap" type="com.lizhenchuan.bean.Lend" >
+    <id column="lid" property="lid" jdbcType="BIGINT" />
+    <result column="rid" property="rid" jdbcType="BIGINT" />
+    <result column="bid" property="bid" jdbcType="BIGINT" />
+    <result column="actualTime" property="actualtime" jdbcType="DATE" />
+    <result column="predictTime" property="predicttime" jdbcType="DATE" />
+    <result column="actualrepayTime" property="actualrepaytime" jdbcType="DATE" />
+    <result column="mid" property="mid" jdbcType="BIGINT" />
+    <result column="repayState" property="repaystate" jdbcType="INTEGER" />
+    <result column="overdueState" property="overduestate" jdbcType="INTEGER" />
+  </resultMap>
+  <!--public List<Lend> selectLend(Long rid); //查询用户的订单，参数是读者id-->
+<select id="selectLend" parameterType="Long" resultType="Lend">
+  select * from lend
+  <where>
+      rid = #{rid}
+  </where>
+</select>
+  <!--public void selectrepayState(Long rid); //查询用户有无未还借书记录，参数是读者id-->
+
+  <!--public Date selectpredictTime(Long lid); //查询订单的预计还书时间，参数是借书记录id-->
+
+  <!--public void saveLend(Lend lend); //新增借书记录-->
+
+  <!--public void updatepredictTime(@Param("lid") Long lid,@Param("predictTime") Date predictTime); //修改订单预计还书时间-->
+
+  <!--public void updateactualrepayTime(@Param("lid")Long lid,@Param("actualrepayTime")Date actualrepayTime); //修改订单的实际还书时间-->
+
+  <!--public void updaterepayState(@Param("lid")Long lid,@Param("repayState")Integer repayState); //修改借书记录状态-->
+
+  <!--public void updateoverdueState(@Param("lid")Long lid,@Param("overdueState")Integer overdueState); //修改逾期状态-->
+
+  <!--Integer queryOrderCount(Long Bid); //通过书籍id,查询有多少条借过本书-->
+
+  <!--List<Reader> queryReaderBorrow(Long Bid); //通过书籍id,查询有哪些人借过本书-->
+
+  <!--Integer queryBookOverdueCount(Long Bid); //通过书籍id,查询此书逾期次数-->
+
+  <!--Integer queryReaderBorrowCount(Long Rid); //通过读者id,查询他借过多少次书-->
+
+  <!--List<BookIsbn> queryBorrowBook(Long Rid); //通过读者id,查询他借过哪些书-->
+
+  <!--public void IsOverdue(@Param("predictRepayTime")Date predictRepayTime,@Param("actualRepayTime") Date actualRepayTime); //通过是预计还书日期和实际还书日期查询此本书还书时间是否逾期-->
+
+</mapper>
