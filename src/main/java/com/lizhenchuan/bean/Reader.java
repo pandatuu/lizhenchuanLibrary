@@ -1,5 +1,7 @@
 package com.lizhenchuan.bean;
 
+import java.util.List;
+
 public class Reader {
     private Long rid;
 
@@ -19,8 +21,36 @@ public class Reader {
 
     private Long money;
 
+    private List<Appointment> appointments;
+    private List<Lend>  lends;
+    private List<Mail> mails;
+
     public Long getRid() {
         return rid;
+    }
+
+    public List<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(List<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public List<Lend> getLends() {
+        return lends;
+    }
+
+    public void setLends(List<Lend> lends) {
+        this.lends = lends;
+    }
+
+    public List<Mail> getMails() {
+        return mails;
+    }
+
+    public void setMails(List<Mail> mails) {
+        this.mails = mails;
     }
 
     public void setRid(Long rid) {
@@ -90,4 +120,5 @@ public class Reader {
     public void setMoney(Long money) {
         this.money = money;
     }
+
 }

@@ -13,18 +13,30 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private MailMapper mailMapper;
     @Override
-    public void savemail(Mail mail) {
-        mailMapper.saveMail(mail);
+    public boolean savemail(Mail mail) {
+        Integer integer = mailMapper.saveMail(mail);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void updateaddress(Long mid, String address) {
-        mailMapper.updateAddress(mid, address);
+    public boolean updateaddress(Long mid, String address) {
+        Integer integer = mailMapper.updateAddress(mid, address);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void updatephone(Long mid, String phone) {
-        mailMapper.updatePhone(mid, phone);
+    public boolean updatephone(Long mid, String phone) {
+        Integer integer = mailMapper.updatePhone(mid, phone);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

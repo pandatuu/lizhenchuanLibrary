@@ -21,6 +21,34 @@ public class Lend {
 
     private Integer overduestate;
 
+    private Reader reader;
+    private Mail mail;
+    private BookIsbn bookIsbn;
+
+    public Mail getMail() {
+        return mail;
+    }
+
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
+
+    public BookIsbn getBookIsbn() {
+        return bookIsbn;
+    }
+
+    public void setBookIsbn(BookIsbn bookIsbn) {
+        this.bookIsbn = bookIsbn;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
     public Long getLid() {
         return lid;
     }

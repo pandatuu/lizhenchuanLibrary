@@ -5,27 +5,5 @@
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="user" property="user" jdbcType="VARCHAR" />
   </resultMap>
-  <insert id="insert" parameterType="com.lizhenchuan.bean.User" >
-    insert into user (id, user)
-    values (#{id,jdbcType=INTEGER}, #{user,jdbcType=VARCHAR})
-  </insert>
-  <insert id="insertSelective" parameterType="com.lizhenchuan.bean.User" >
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="user != null" >
-        user,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="user != null" >
-        #{user,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
+
 </mapper>

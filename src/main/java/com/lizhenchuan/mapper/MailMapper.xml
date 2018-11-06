@@ -9,8 +9,21 @@
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="wNumber" property="wnumber" jdbcType="INTEGER"/>
+
     </resultMap>
-    <resultMap id="integer" type="java.lang.Integer">
+    <!---->
+    <resultMap id="haha" type="Reader">
+        <id column="rid" property="rid" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="idcard" property="idcard" jdbcType="VARCHAR"/>
+        <result column="credit" property="credit" jdbcType="BIGINT"/>
+        <result column="money" property="money" jdbcType="BIGINT"/>
+        <collection property="mails" ofType="Mail" resultMap="BaseResultMap">
+        </collection>
     </resultMap>
     <!--public void saveMail(Mail mail); //添加邮寄记录-->
     <insert id="saveMail" parameterType="Mail">
@@ -19,30 +32,40 @@
     </insert>
     <!--public void updateAddress(@Param("mid")Long mid,@Param("address")String address); //修改订单联系地址-->
     <update id="updateAddress" >
-        update mail set address = #{address}
-        <where>
-            mid = #{mid}
-        </where>
+        call mailUpdateaddress(#{mid},#{address})
     </update>
     <!--public void updatePhone(@Param("mid")Long mid,@Param("phone")String phone); //修改订单电话-->
     <update id="updatePhone">
-        update mail set phone = #{phone}
-        <where>
-            mid = #{mid}
-        </where>
+        call mailUpdatephone(#{mid},#{phone})
     </update>
     <!--public List<Mail> selectMail(Long rid); //查询用户邮寄记录-->
     <select id="selectMail" parameterType="Long" resultType="Mail">
-        select * from mail
-        <where>
-            rid = #{rid}
-        </where>
+        call mailSelectmail(#{rid})
     </select>
     <!--public List<Long> selectMid(Long rid); //查询用户邮寄记录ID-->
     <select id="selectMid" parameterType="Long" resultType="Long">
-        select mid from mail
+        call mailSelectmid(#{rid})
+    </select>
+
+    <!--//查询分页总条数-->
+    <!--public Integer mailCount(QueryVo vo);-->
+    <select id="mailCount" parameterType="QueryVo" resultType="Integer">
+        select count(1) from mail
         <where>
-            rid = #{rid}
+            <if test="id != null">
+                rid = #{id}
+            </if>
         </where>
+    </select>
+    <!--//查询分页结果集-->
+    <!--public List<Mail> selectByQueryVo(QueryVo vo);-->
+    <select id="selectByQueryVo" parameterType="QueryVo" resultType="Mail">
+        select * from mail
+        <where>
+            <if test="id != null">
+                rid = #{id}
+            </if>
+        </where>
+        limit #{startrow},#{pagesize}
     </select>
 </mapper>

@@ -11,54 +11,28 @@
         <result column="address" property="address" jdbcType="VARCHAR"/>
         <result column="idcard" property="idcard" jdbcType="VARCHAR"/>
         <result column="credit" property="credit" jdbcType="BIGINT"/>
-        <result column="money" property="money" jdbcType="BIGINT"/>
+        <result column="money" property="money" jdbcType="DOUBLE"/>
     </resultMap>
     <!--public Integer savereader(Reader reader); // 添加读者rid;-->
     <insert id="savereader" parameterType="Reader">
-        insert into reader (username,
-                            sex,
-                            phone,
-                            email,
-                            address,
-                            idcard,
-                            credit,
-                            money)
-        value (#{username},
-               #{sex},
-               #{phone},
-               #{email},
-               #{address},
-               #{idcard},
-               #{credit},
-               #{money})
+        call readerSavereader(#{username},#{sex},#{phone},#{email},
+               #{address},#{idcard},#{credit},#{money})
     </insert>
     <!--public Integer updateemail(@Param("rid")Long rid,@Param("email")String email); //修改用户邮箱-->
     <update id="updateemail">
-        update reader set email = #{email}
-        <where>
-            rid = #{rid}
-        </where>
+        call readerUpdateemail(#{rid},#{email})
     </update>
     <!--public Integer updateaddress(@Param("rid")Long rid,@Param("address")String address); //修改用户联系地址-->
     <update id="updateaddress">
-        update reader set address = #{address}
-        <where>
-            rid = #{rid}
-        </where>
+        call readerUpdateaddress(#{rid},#{address})
     </update>
     <!--public Integer updatephone(@Param("rid")Long rid,@Param("phone")String phone); //修改用户电话-->
     <update id="updatephone">
-        update reader set phone = #{phone}
-        <where>
-            rid = #{rid}
-        </where>
+        call readerUpdatephone(#{rid},#{phone})
     </update>
     <!--public Integer deletereader(Long rid); //删除读者-->
     <delete id="deletereader" parameterType="Long">
-        delete from reader
-        <where>
-            rid = #{rid}
-        </where>
+        call  readerDeletereader(#{rid})
     </delete>
     <!--public Reader selectrid(Long rid); //根据rid详细查询-->
     <select id="selectrid" parameterType="Long" resultType="Reader">
@@ -69,45 +43,27 @@
     </select>
     <!--public Reader selectidcard(String idcard); //根据IDCARD详细查询-->
     <select id="selectidcard" parameterType="String" resultType="Reader">
-        select * from reader
-        <where>
-            idcard = #{idcard}
-        </where>
+        call readerSelectidcard(#{rid})
     </select>
     <!--public List<Reader> selectusername(String username);// 根据姓名模糊查询-->
     <select id="selectusername" parameterType="String" resultType="Reader">
-        select * from reader
-        <where>
-            username like "%"#{username}"%"
-        </where>
+        call readerSelectusername(#{username})
     </select>
     <!--public List<Reader> selectridphone(String phone); //根据电话模糊查询-->
     <select id="selectridphone" parameterType="String" resultType="Reader">
-        select * from reader
-        <where>
-            phone like "%"#{phone}"%"
-        </where>
+        call readerSelectridphone(#{phone})
     </select>
     <!--public List<Reader> selectridaddress(String address); //根据联系地址模糊查询-->
     <select id="selectridaddress" parameterType="String" resultType="Reader">
-        select * from reader
-        <where>
-            address like "%"#{address}"%"
-        </where>
+        call readerSelectridaddress(#{address})
     </select>
     <!--public Integer selectcredit(Long rid); //查用户信用分-->
-    <select id="selectcredit" parameterType="Long" resultType="Reader">
-        select credit from reader
-        <where>
-            rid = #{rid}
-        </where>
+    <select id="selectcredit" parameterType="Long" resultType="Integer">
+        SELECT credit FROM reader WHERE rid=#{rid}
     </select>
-    <!--public Integer selectmoney(Long rid); //查用户余额-->
-    <select id="selectmoney" parameterType="Long" resultType="Reader">
-        select money from reader
-        <where>
-            rid = #{rid}
-        </where>
+    <!--public Double selectmoney(Long rid); //查用户余额-->
+    <select id="selectmoney" parameterType="Long" resultType="Double">
+        select money from reader where rid=#{rid}
     </select>
     <!--List<Lend> queryOverdueOrder(Long Rid); //通过读者id,查询他有哪些订单逾期-->
     <select id="queryOverdueOrder" parameterType="Long" resultType="Reader">
@@ -125,30 +81,18 @@
     </select>
     <!--public Integer updatecredit(@Param("rid")Long rid,@Param("credit")Integer credit); //修改信用分-->
     <update id="updatecredit">
-        update reader set credit = #{credit}
-        <where>
-            rid = #{rid}
-        </where>
+        call readerUpdatecredit(#{rid},#{credit})
     </update>
     <!--public String selectaddress(Long rid); //查询用户联系地址-->
-    <select id="selectaddress" parameterType="Long" resultType="Reader">
-        select address from lend
-        <where>
-            rid = #{rid}
-        </where>
+    <select id="selectaddress" parameterType="Long" resultType="String">
+        call readerSelectaddress(#{rid})
     </select>
     <!--public String selectphone(Long rid); //查询用户电话-->
-    <select id="selectphone" parameterType="Long" resultType="Reader">
-        select phone from lend
-        <where>
-            rid = #{rid}
-        </where>
+    <select id="selectphone" parameterType="Long" resultType="String">
+        call readerSelectphone(#{rid})
     </select>
     <!--public Integer updatemoney(@Param("rid")Long rid,@Param("money")Double money); //修改用户余额-->
     <update id="updatemoney">
-        update reader set money = #{money}
-        <where>
-            rid = #{rid}
-        </where>
+        update reader set money=money-#{money} where rid=#{rid};
     </update>
 </mapper>

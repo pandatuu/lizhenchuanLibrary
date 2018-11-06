@@ -15,14 +15,21 @@ public class AppointmentServiceImpl implements AppointmentService {
     private AppointmentMapper am;
 
     @Override
-    public void saveAppointment(Appointment appointment) {
-        am.saveAppointment(appointment);
-
+    public boolean saveAppointment(Appointment appointment) {
+        Integer integer = am.saveAppointment(appointment);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void updateAppointmentState(Long oid, Integer appointmentState) {
-         am.updateAppointmentState(oid,appointmentState);
+    public boolean updateAppointmentState(Long oid, Integer appointmentState) {
+        Integer integer = am.updateAppointmentState(oid, appointmentState);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override

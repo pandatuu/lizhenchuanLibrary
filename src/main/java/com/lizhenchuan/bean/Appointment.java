@@ -13,6 +13,24 @@ public class Appointment {
 
     private Integer appointmentstate;
 
+    private Reader reader;
+    private BookIsbn bookIsbn;
+
+    public BookIsbn getBookIsbn() {
+        return bookIsbn;
+    }
+
+    public void setBookIsbn(BookIsbn bookIsbn) {
+        this.bookIsbn = bookIsbn;
+    }
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
     public Long getOid() {
         return oid;
     }

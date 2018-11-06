@@ -6,9 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface AppointmentService {
-    public void saveAppointment(Appointment appointment); //添加预约记录
+    public boolean saveAppointment(Appointment appointment); //添加预约记录
 
-    public void updateAppointmentState(Long oid,Integer appointmentState); //修改预约状态
+    public boolean updateAppointmentState(Long oid,Integer appointmentState); //修改预约状态
 
     public List<Appointment> selectAppointment(Long rid); //查询用户预约记录
 

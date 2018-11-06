@@ -1,48 +1,142 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lizhenchuan.mapper.LendMapper" >
-  <resultMap id="BaseResultMap" type="com.lizhenchuan.bean.Lend" >
-    <id column="lid" property="lid" jdbcType="BIGINT" />
-    <result column="rid" property="rid" jdbcType="BIGINT" />
-    <result column="bid" property="bid" jdbcType="BIGINT" />
-    <result column="actualTime" property="actualtime" jdbcType="DATE" />
-    <result column="predictTime" property="predicttime" jdbcType="DATE" />
-    <result column="actualrepayTime" property="actualrepaytime" jdbcType="DATE" />
-    <result column="mid" property="mid" jdbcType="BIGINT" />
-    <result column="repayState" property="repaystate" jdbcType="INTEGER" />
-    <result column="overdueState" property="overduestate" jdbcType="INTEGER" />
-  </resultMap>
-  <!--public List<Lend> selectLend(Long rid); //查询用户的订单，参数是读者id-->
-<select id="selectLend" parameterType="Long" resultType="Lend">
-  select * from lend
-  <where>
-      rid = #{rid}
-  </where>
-</select>
-  <!--public void selectrepayState(Long rid); //查询用户有无未还借书记录，参数是读者id-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lizhenchuan.mapper.LendMapper">
+    <!-- lend表映射 -->
+    <resultMap id="BaseResultMap" type="com.lizhenchuan.bean.Lend">
+        <id column="lid" property="lid" jdbcType="BIGINT"/>
+        <result column="rid" property="rid" jdbcType="BIGINT"/>
+        <result column="bid" property="bid" jdbcType="BIGINT"/>
+        <result column="actualTime" property="actualtime" jdbcType="DATE"/>
+        <result column="predictTime" property="predicttime" jdbcType="DATE"/>
+        <result column="actualrepayTime" property="actualrepaytime"
+                jdbcType="DATE"/>
+        <result column="mid" property="mid" jdbcType="BIGINT"/>
+        <result column="repayState" property="repaystate" jdbcType="INTEGER"/>
+        <result column="overdueState" property="overduestate"
+                jdbcType="INTEGER"/>
+        <!-- private Mail mail; 映射 -->
+        <association property="mail" javaType="Mail">
+            <id column="mid" property="mid" jdbcType="BIGINT"/>
+            <result column="rid" property="rid" jdbcType="BIGINT"/>
+            <result column="bid" property="bid" jdbcType="BIGINT"/>
+            <result column="address" property="address" jdbcType="VARCHAR"/>
+            <result column="phone" property="phone" jdbcType="VARCHAR"/>
+            <result column="wNumber" property="wnumber" jdbcType="INTEGER"/>
+        </association>
+        <!-- private BookIsbn bookIsbn; 映射 -->
+        <association property="bookIsbn" javaType="BookIsbn">
+            <id column="isbn_id" property="isbnId" jdbcType="BIGINT"/>
+            <result column="isbn" property="isbn" jdbcType="VARCHAR"/>
+            <result column="p_id" property="pId" jdbcType="BIGINT"/>
+            <result column="a_id" property="aId" jdbcType="BIGINT"/>
+            <result column="n_id" property="nId" jdbcType="BIGINT"/>
+            <result column="c_id" property="cId" jdbcType="BIGINT"/>
+            <result column="pushlishTime" property="pushlishtime" jdbcType="DATE"/>
+            <result column="edition" property="edition" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <!-- private  reader; 映射 -->
+    <resultMap id="reader" type="Reader">
+        <id column="rid" property="rid" jdbcType="BIGINT"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="idcard" property="idcard" jdbcType="VARCHAR"/>
+        <result column="credit" property="credit" jdbcType="BIGINT"/>
+        <result column="money" property="money" jdbcType="BIGINT"/>
+        <collection property="lends" ofType="Lend" resultMap="BaseResultMap">
+        </collection>
+    </resultMap>
 
-  <!--public Date selectpredictTime(Long lid); //查询订单的预计还书时间，参数是借书记录id-->
+    <!--public List<Lend> selectLendByrId(Long rid); //查询用户的订单，参数是读者id-->
+    <select id="selectLendByrId" parameterType="Long" resultType="Lend">
+        CALL lendSelectLend(#{rid});
+    </select>
+    <!-- public Lend selectLendBylId(Long lid); //查询借书订单，参数是订单id -->
+    <select id="selectLendBylId" parameterType="Long" resultType="Lend">
+        select * from lend where lid=#{lid}
+    </select>
+    <!--public Integer selectrepayState(Long rid); //查询用户未还的借书记录的个数，大于0都表示有未还，参数是读者id-->
+    <select id="selectrepayState" parameterType="Long" resultType="Integer">
+        CALL lendSelectrepayState(#{rid});
+    </select>
+    <!--public Date selectpredictTime(Long lid); //查询订单的预计还书时间，参数是借书记录id-->
+    <select id="selectpredictTime" parameterType="Long" resultType="Date">
+        CALL lendselectpredictTime(#{lid});
+    </select>
+    <!--public void saveLend(Lend lend); //新增借书记录-->
+    <insert id="saveLend" parameterType="Lend">
+        CALL lendsaveLend(#{lid}, #{rid}, #{bid}, #{actualtime}, #{predicttime},
+                          #{actualtime}, #{mid}, #{repaystate},
+                          #{overduestate});
+    </insert>
+    <!--public void updatepredictTime(@Param("lid") Long lid,@Param("predictTime") Date predictTime); //修改订单预计还书时间-->
+    <update id="updatepredictTime">
+        CALL lendupdatepredictTime(#{lid}, #{predictTime});
+    </update>
+    <!--public void updateactualrepayTime(@Param("lid")Long lid,@Param("actualrepayTime")Date actualrepayTime); //修改订单的实际还书时间-->
+    <update id="updateactualrepayTime">
+        CALL lendupdateactualrepayTime(#{lid}, #{actualrepayTime});
+    </update>
+    <!--public void updaterepayState(@Param("lid")Long lid,@Param("repayState")Integer repayState); //修改借书记录状态-->
+    <update id="updaterepayState">
+        CALL lendupdaterepayState(#{lid}, #{repayState});
+    </update>
+    <!--public void updateoverdueState(@Param("lid")Long lid,@Param("overdueState")Integer overdueState); //修改逾期状态-->
+    <update id="updateoverdueState">
+        CALL lendupdateoverdueState(#{lid}, #{overdueState});
+    </update>
+    <!--Integer selectOrderCount(Long Bid); //通过书籍id,查询有多少条借过本书-->
+    <select id="selectOrderCount" parameterType="Long" resultType="Integer">
+        CALL lendselectOrderCount(#{bid});
+    </select>
+    <!--List<Reader> selectReaderBorrow(Long Bid); //通过书籍id,查询有哪些人借过本书-->
+    <select id="selectReaderBorrow" parameterType="Long" resultType="Reader">
+        CALL lendselectReaderBorrow(#{bid});
+    </select>
+    <!--Integer selectBookOverdueCount(Long Bid); //通过书籍id,查询此书逾期次数-->
+    <select id="selectBookOverdueCount" parameterType="Long" resultType="Integer">
+        CALL lendselectBookOverdueCount(#{bid});
+    </select>
+    <!--Integer selectReaderBorrowCount(Long Rid); //通过读者id,查询他借过多少次书-->
+    <select id="selectReaderBorrowCount" parameterType="Long" resultType="Integer">
+        CALL lendselectReaderBorrowCount(#{rid});
+    </select>
+    <!--List<BookIsbn> selectBorrowBook(Long Rid); //通过读者id,查询他借过哪些书-->
+    <select id="selectBorrowBook" parameterType="Long" resultType="BookIsbn">
+        CALL lendselectBorrowBook(#{rid});
+    </select>
+    <!--public Integer IsOverdue(@Param("predicttime")Date predictRepayTime,@Param("actualRepayTime") Date actualRepayTime); //通过是预计还书日期和实际还书日期查询此本书还书时间是否逾期-->
+    <select id="IsOverdue" resultType="Integer">
+        CALL lendselectIsOverdue(#{predicttime},#{actualRepayTime});
+    </select>
+    <!-- public Integer repayStateZero(Long rid); -->
+    <select id="repayStateZero" parameterType="Long" resultType="Integer">
+        SELECT COUNT(*) FROM lend WHERE rid=1 AND repayState=0
+    </select>
 
-  <!--public void saveLend(Lend lend); //新增借书记录-->
-
-  <!--public void updatepredictTime(@Param("lid") Long lid,@Param("predictTime") Date predictTime); //修改订单预计还书时间-->
-
-  <!--public void updateactualrepayTime(@Param("lid")Long lid,@Param("actualrepayTime")Date actualrepayTime); //修改订单的实际还书时间-->
-
-  <!--public void updaterepayState(@Param("lid")Long lid,@Param("repayState")Integer repayState); //修改借书记录状态-->
-
-  <!--public void updateoverdueState(@Param("lid")Long lid,@Param("overdueState")Integer overdueState); //修改逾期状态-->
-
-  <!--Integer queryOrderCount(Long Bid); //通过书籍id,查询有多少条借过本书-->
-
-  <!--List<Reader> queryReaderBorrow(Long Bid); //通过书籍id,查询有哪些人借过本书-->
-
-  <!--Integer queryBookOverdueCount(Long Bid); //通过书籍id,查询此书逾期次数-->
-
-  <!--Integer queryReaderBorrowCount(Long Rid); //通过读者id,查询他借过多少次书-->
-
-  <!--List<BookIsbn> queryBorrowBook(Long Rid); //通过读者id,查询他借过哪些书-->
-
-  <!--public void IsOverdue(@Param("predictRepayTime")Date predictRepayTime,@Param("actualRepayTime") Date actualRepayTime); //通过是预计还书日期和实际还书日期查询此本书还书时间是否逾期-->
-
+    <!--//查询分页总条数-->
+    <!--public Integer lendCount(QueryVo vo);-->
+    <select id="lendCount" parameterType="QueryVo" resultType="Integer">
+        select count(1) from lend
+        <where>
+            <if test="id != null">
+                rid = #{id}
+            </if>
+        </where>
+    </select>
+    <!--//查询分页结果集-->
+    <!--public List<Lend> selectByQueryVo(QueryVo vo);-->
+    <select id="selectByQueryVo" parameterType="QueryVo" resultType="Lend">
+        select * from lend
+        <where>
+            <if test="id != null">
+                rid = #{id}
+            </if>
+        </where>
+        limit #{startrow},#{pagesize}
+    </select>
 </mapper>

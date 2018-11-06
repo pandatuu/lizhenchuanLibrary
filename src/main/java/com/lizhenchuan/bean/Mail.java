@@ -13,6 +13,25 @@ public class Mail {
 
     private Integer wnumber;
 
+    private Reader reader;
+    private BookIsbn bookIsbn;
+
+    public BookIsbn getBookIsbn() {
+        return bookIsbn;
+    }
+
+    public void setBookIsbn(BookIsbn bookIsbn) {
+        this.bookIsbn = bookIsbn;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
     public Long getMid() {
         return mid;
     }
@@ -59,5 +78,17 @@ public class Mail {
 
     public void setWnumber(Integer wnumber) {
         this.wnumber = wnumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Mail{" +
+                "mid=" + mid +
+                ", rid=" + rid +
+                ", bid=" + bid +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", wnumber=" + wnumber +
+                '}';
     }
 }

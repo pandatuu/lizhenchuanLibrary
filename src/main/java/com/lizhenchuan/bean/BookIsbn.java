@@ -19,6 +19,10 @@ public class BookIsbn {
 
     private String edition;
 
+    public BookIsbn(Long isbnId) {
+        this.isbnId = isbnId;
+    }
+
     public Long getIsbnId() {
         return isbnId;
     }

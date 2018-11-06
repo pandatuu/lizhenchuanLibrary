@@ -1,6 +1,7 @@
 package com.lizhenchuan.mapper;
 
 import com.lizhenchuan.bean.Mail;
+import com.lizhenchuan.bean.QueryVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,4 +17,9 @@ public interface MailMapper {
     public List<Mail> selectMail(Long rid); //查询用户邮寄记录
 
     public List<Long> selectMid(Long rid); //查询用户邮寄记录ID
+
+    //查询分页总条数
+    public Integer mailCount(QueryVo vo);
+    //查询分页结果集
+    public List<Mail> selectByQueryVo(QueryVo vo);
 }

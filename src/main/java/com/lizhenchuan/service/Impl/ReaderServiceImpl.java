@@ -14,28 +14,45 @@ public class ReaderServiceImpl implements ReaderService {
     @Autowired
     private ReaderMapper readerMapper;
     @Override
-    public void savereader(Reader reader) {
+    public boolean savereader(Reader reader) {
         readerMapper.savereader(reader);
+        return false;
     }
 
     @Override
-    public void updateemail(Long rid, String email) {
-        readerMapper.updateemail(rid, email);
+    public boolean updateemail(Long rid, String email) {
+        Integer integer = readerMapper.updateemail(rid, email);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void updateaddress(Long rid, String address) {
-        readerMapper.updateaddress(rid, address);
+    public boolean updateaddress(Long rid, String address) {
+        Integer integer = readerMapper.updateaddress(rid, address);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void updatephone(Long rid, String phone) {
-        readerMapper.updatephone(rid, phone);
+    public boolean updatephone(Long rid, String phone) {
+        Integer integer = readerMapper.updatephone(rid, phone);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public void deletereader(Long rid) {
-        readerMapper.deletereader(rid);
+    public boolean deletereader(Long rid) {
+        Integer integer = readerMapper.deletereader(rid);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -75,8 +92,8 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public Integer selectmoney(Long rid) {
-        Integer selectmoney = readerMapper.selectmoney(rid);
+    public Double selectmoney(Long rid) {
+        Double selectmoney = readerMapper.selectmoney(rid);
         return selectmoney;
     }
 
@@ -93,8 +110,12 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public void updatecredit(Long rid, Integer credit) {
-        readerMapper.updatecredit(rid, credit);
+    public boolean updatecredit(Long rid, Integer credit) {
+        Integer integer = readerMapper.updatecredit(rid, credit);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -110,7 +131,11 @@ public class ReaderServiceImpl implements ReaderService {
     }
 
     @Override
-    public void updatemoney(Long rid, Double money) {
-        readerMapper.updatemoney(rid, money);
+    public boolean updatemoney(Long rid, Double money) {
+        Integer integer = readerMapper.updatemoney(rid, money);
+        if (integer > 0) {
+            return true;
+        }
+        return false;
     }
 }
